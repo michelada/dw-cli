@@ -163,7 +163,7 @@ warn [2017-01-13 11:56:01.467 GMT] WARN JobThread|14022147|Export Analytics Conf
 ## Installation
 #### Install via NPM
 ```
-user@computer:~/Sites/site$ npm install -g git+ssh://git@github.com:NoelRock333/dw-cli.git
+user@computer:~/Sites/site$ npm install -g git+ssh://git@github.com:michelada/dw-cli.git
 ```
 #### The way config works
 Place a dw.json file in your project root directory or use `dw init`.
@@ -226,13 +226,13 @@ Working on several sandboxes and a staging instance with two-factor auth?
   "cert": "./user.pem",
   "ca": "./staging.cert",
   "watch": {
-    "ignored_dirs": [
+    "ignoredDirs": [
         "gulp_builder/temp-modcloth",
         "dw.json"
     ],
-    "gulp_exceptions": [
-        { "exception": "/cartridge/scss/", "command": "gulp styles" },
-        { "exception": "/cartridge/js/", "command": "gulp client-javascript" }
+    "hooks": [
+        { "path": "/cartridge/scss/", "command": "cd gulp_builder && gulp styles" },
+        { "path": "/cartridge/js/", "command": "cd gulp_builder && gulp client-javascript" }
     ]
   }
 }
