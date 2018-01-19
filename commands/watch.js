@@ -92,7 +92,7 @@ module.exports = options => {
     function runHooks(file, callback) {
       let hook = findHook(file);
       if (hook) {
-        log.info(`Running hook command: ${hook,command}`);
+        log.info(`Running hook command: ${hook.command}`);
         exec(`(${hook.command})`, (error, stdout, stderr) => {
           if (error) {
             log.error(error);
