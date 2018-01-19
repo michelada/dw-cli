@@ -11,7 +11,7 @@ module.exports = options => {
   const {cartridges, codeVersion, webdav, request, silent = false, watch} = options;
   let {ignoredDirs, hooks} = watch;
   ignoredDirs = Array.isArray(ignoredDirs) ? ignoredDirs : [];
-   = Array.isArray(hooks) ? hooks : [];
+  hooks = Array.isArray(hooks) ? hooks : [];
 
   try {
     log.info(`Pushing ${codeVersion} changes to ${webdav}`);
