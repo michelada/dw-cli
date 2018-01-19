@@ -96,10 +96,7 @@ module.exports = options => {
         exec(`(${hook.command})`, (error, stdout, stderr) => {
           if (error) {
             log.error(error);
-            log.error(stderr);
           }
-
-          log.info(stdout);
         });
       } else {
         callback(file);
