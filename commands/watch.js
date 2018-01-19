@@ -20,6 +20,8 @@ module.exports = options => {
     let spinner;
     let text;
 
+    const ignoredDirs = ignoredDirs.map(item => path.join(process.cwd(), item));
+
     const watcher = chokidar.watch('dir', {
       ignored: [/[/\\]\./, '**/node_modules/**', ...ignoredDirs],
       ignoreInitial: true,
