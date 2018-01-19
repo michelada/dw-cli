@@ -9,9 +9,9 @@ const { exec } = require('child_process');
 
 module.exports = options => {
   const {cartridges, codeVersion, webdav, request, silent = false, watch} = options;
-  let {ignored_dirs, gulp_exceptions} = watch;
-  ignored_dirs = Array.isArray(ignored_dirs) ? ignored_dirs : [];
-  gulp_exceptions = Array.isArray(gulp_exceptions) ? gulp_exceptions : [];
+  let {ignoredDirs, hooks} = watch;
+  ignoredDirs = Array.isArray(ignoredDirs) ? ignoredDirs : [];
+   = Array.isArray(hooks) ? hooks : [];
 
   try {
     log.info(`Pushing ${codeVersion} changes to ${webdav}`);
@@ -20,7 +20,7 @@ module.exports = options => {
     let spinner;
     let text;
 
-    const ignoredDirs = ignored_dirs.map(item => path.join(process.cwd(), item));
+    const ignoredDirs = ignoredDirs.map(item => path.join(process.cwd(), item));
 
     const watcher = chokidar.watch('dir', {
       ignored: [/[/\\]\./, '**/node_modules/**', ...ignoredDirs],
@@ -83,24 +83,24 @@ module.exports = options => {
       }
     };
 
-    function findException(path) {
-      return gulp_exceptions.find(item => {
-        return path.includes(item.exception);
+    function findHook(path) {
+      return hooks.find(item => {
+        return path.includes(item.path);
       });
     };
 
-    function checkExceptions(file, callback) {
-      let exception = findException(file);
-      if (exception) {
+    function runHooks(file, callback) {
+      let hook = findHook(file);
+      if (hook) {
         // Execute command to recompile assets
-        exec(`(cd gulp_builder && ${exception.command})`, (error, stdout, stderr) => {});        
+        exec(`(${exception.command})`, (error, stdout, stderr) => {});
       } else {
         callback(file);
       }
     }
 
-    watcher.on('change', (file) => checkExceptions(file, upload));
-    watcher.on('add', (file) => checkExceptions(file, upload));
+    watcher.on('change', (file) => runHooks(file, upload));
+    watcher.on('add', (file) => runHooks(file, upload));
   } catch (err) {
     log.error(err);
   }
