@@ -92,8 +92,15 @@ module.exports = options => {
     function runHooks(file, callback) {
       let hook = findHook(file);
       if (hook) {
-        // Execute command to recompile assets
-        exec(`(${hook.command})`, (error, stdout, stderr) => {});
+        log.info(`Running hook command: ${hook,command}`);
+        exec(`(${hook.command})`, (error, stdout, stderr) => {
+          if (error) {
+            log.error(error);
+            log.error(stderr);
+          }
+
+          log.info(stdout);
+        });
       } else {
         callback(file);
       }
